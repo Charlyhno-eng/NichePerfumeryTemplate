@@ -1,22 +1,33 @@
 "use client";
 
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography, Link } from "@mui/material";
 
-const Footer: React.FC = () => {
+export default function Footer() {
   return (
     <Box
       component="footer"
       sx={{
-        py: 6,
+        py: 3,
+        px: 2,
         mt: "auto",
-        backgroundColor: "transparent",
-        borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+        backgroundColor: (theme) =>
+          theme.palette.mode === "light"
+            ? theme.palette.grey[200]
+            : theme.palette.grey[800],
       }}
     >
-      <Typography>footer</Typography>
+      <Container maxWidth="md">
+        <Typography variant="body1" align="center">
+          © {new Date().getFullYear()} MonSite. Tous droits réservés.
+        </Typography>
+        <Typography variant="body2" color="text.secondary" align="center">
+          Développé avec{" "}
+          <Link href="https://mui.com/" target="_blank" rel="noopener">
+            MUI
+          </Link>{" "}
+          & Next.js
+        </Typography>
+      </Container>
     </Box>
   );
-};
-
-export default Footer;
+}

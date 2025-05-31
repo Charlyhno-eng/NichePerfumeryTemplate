@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../src/styles/globals.css";
 import Header from "../src/components/Header";
 import Footer from "../src/components/Footer";
-
-const WEBSITE_NAME: string = "https://tonsite.com";
+import ThemeRegistry from "../src/styles/theme/ThemeRegistry";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,19 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // TODO: modifier les metadata
   title: "Parfumerie de niche",
   description: "Découvrez des parfums rares, élégants et inoubliables.",
+  metadataBase: new URL("https://www.monsite-parfum.fr"),
   openGraph: {
     title: "Parfumerie de niche",
-    description: "Explorez notre sélection exclusive de parfums d'exception.",
-    url: `${WEBSITE_NAME}`,
+    description:
+      "Une collection rare et raffinée pour les amateurs de parfums d’exception.",
+    url: "https://www.monsite-parfum.fr",
     siteName: "Parfumerie de niche",
     images: [
       {
-        url: `${WEBSITE_NAME}/images/preview.jpg`,
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Parfum d’exception présenté sur fond élégant",
+        alt: "Image de présentation de parfums rares",
       },
     ],
     locale: "fr_FR",
@@ -38,9 +40,17 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Parfumerie de niche",
-    description: "Explorez notre sélection exclusive de parfums d'exception.",
-    images: [`${WEBSITE_NAME}/images/preview.jpg`],
-    site: "@tonTwitter",
+    description: "Découvrez des parfums rares, élégants et inoubliables.",
+    images: ["/og-image.jpg"],
+    creator: "@toncompte",
+  },
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/favicon.ico",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -55,9 +65,11 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/logo.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
-        {children}
-        <Footer />
+        <ThemeRegistry>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeRegistry>
       </body>
     </html>
   );
