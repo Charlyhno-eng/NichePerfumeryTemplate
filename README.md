@@ -1,47 +1,92 @@
-# Avancement
-
----
-
 # NichePerfumeryTemplate
 
 Modèle de site e-commerce de parfum de niche.
 
-Ce projet est un modèle pour la création d'un site de commerce spécialisé dans la vente de parfums de niche. Il fournit une architecture et des suggestions techniques pour développer une plateforme robuste et performante.
-
-## **1. Architecture Générale**
-
-- **Frontend (Next.js)** : Rendu côté serveur (SSR). Utilisation de `App Router`, `Server Components`, et `MUI` pour un développement rapide et une interface utilisateur cohérente.
-- **Backend (Go + Fiber)** : Conçu pour la performance et la légèreté.
-- **BDD (PostgreSQL)**
-
-### Microservices suggérés :
-
-- **Service Authentification** (support JWT, OAuth2)
-- **Service Utilisateur**
-- **Service Catalogue de Parfums** (avec filtres par notes olfactives, marques, etc.)
-- **Service Panier**
-- **Service Commande & Paiement** (intégration Stripe / PayPal)
-- **Service Notifications (email, SMS)**
-- **Service Admin (gestion du stock, des produits)
+Ce projet est un modèle pour la création d'une plateforme de commerce spécialisée dans la vente de parfums de niche. Il fournit une architecture moderne, modulaire et testable pour développer un site performant, maintenable et extensible.
 
 ---
 
-## **2. Conseils Techniques**
+## 1. Stack Technique
 
-### **Frontend : Next.js**
+- **Framework fullstack** : [Next.js (App Router)](https://nextjs.org/docs/app)
+- **Langage** : TypeScript
+- **ORM** : Prisma
+- **Base de données** : PostgreSQL
+- **UI** : Material UI (MUI)
+- **Architecture** : Hexagonale (Ports & Adapters)
+- **Méthodologie** : Test-Driven Development (TDD), Clean Code
 
-- Intègration de **i18n** pour la prise en charge de plusieurs langues (fr/en).
-- **schema.org** et **Open Graph** pour optimiser le référencement (SEO).
-- OPtimisation des images avec **Image optimization** : Next.js combiné avec un CDN (ex: Cloudinary ou un CDN d'images natif).
+---
 
-### **Backend : Go + Fiber**
+## 2. Architecture Hexagonale
 
-- Structure des services par domaine en utilisant les principes de la conception pilotée par le domaine (DDD — Domain Driven Design).
-- Utilisation de **gRPC** ou **REST + message queue (ex: NATS / Kafka)** pour la communication asynchrone entre les services.
-- Mise en place une **API Gateway** (ex: Kong, Traefik ou un petit service en Go avec Reverse Proxy) pour gérer le routage et l'authentification.
-- Centralisation de la **gestion des erreurs** et la **journalisation** (logs) avec des outils comme Zap ou Logrus.
+Le projet est structuré selon les principes de l’**architecture hexagonale** :
 
-### **Base de données**
+- **Core (Domaine pur)** : entités, objets de valeur, interfaces, use-cases
+- **Adapters** : exposition des cas d’utilisation via des routes API Next.js
+- **Infrastructure** : implémentations concrètes des interfaces (accès DB, services externes)
 
-- Utilisation d'une structure relationnelle pour assurer l'intégrité des données.
-- Utilisation de **GORM** pour effectuer des requêtes typées et sécurisées en Go.
+Cette séparation garantit une forte maintenabilité, des tests isolés et une logique métier indépendante de la technologie.
+
+---
+
+## 3. Modules Fonctionnels
+
+- **Authentification** : JWT, OAuth2 (Google, etc.)
+- **Utilisateurs** : création, gestion, préférences
+- **Catalogue de parfums** : navigation par filtres (notes, marques, familles)
+- **Panier** : ajout, suppression, quantité, persistance
+- **Commandes & Paiements** : intégration Stripe / PayPal
+- **Notifications** : emails transactionnels (confirmation commande, réinitialisation, etc.)
+- **Admin** : gestion des produits, stocks, commandes, utilisateurs
+
+---
+
+## 4. Lancer le projet
+
+### Prérequis
+
+- Node.js ≥ 18.x
+- PostgreSQL installé et une base de données accessible
+- `npm` ou `pnpm` installé
+
+### Étapes
+
+```bash
+# 1. Installer les dépendances
+npm install
+
+# 2. Initialiser Prisma (schéma + client)
+npx prisma generate
+
+# 3. Créer la base de données et lancer la première migration
+npx prisma migrate dev --name init
+
+# 4. Lancer le serveur de développement
+npm run dev
+
+---
+
+### Arborescence du projet
+
+```bash
+.
+├── app/                   # App Router Next.js (routes/pages)
+├── components/            # Composants UI MUI
+├── core/                  # Domaine : entités, use-cases, ports
+│   ├── domain/
+│   ├── use-cases/
+│   └── services/
+├── adapters/             # Adapters (API, mappers, contrôleurs)
+│   └── api/
+├── infrastructure/       # DB, Prisma, services externes
+│   ├── prisma/
+│   ├── repositories/
+│   └── services/
+├── tests/                # Tests unitaires & intégration (TDD)
+├── public/               # Fichiers statiques
+├── .env                  # Configuration base de données
+├── prisma/schema.prisma  # Schéma Prisma
+├── package.json
+└── tsconfig.json
+```
