@@ -13,3 +13,206 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  hashedPassword String
+  firstName      String?
+  lastName       String?
+  phone          String?
+  locale         String    @default("fr")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime?
+
+  addresses     UserAddress[]
+  carts         Cart[]
+  orders        Order[]
+  notifications Notification[]
+}
+
+enum AddressType {
+  billing
+  shipping
+}
+
+model UserAddress {
+  id         String      @id @default(uuid())
+  userId     String
+  type       AddressType
+  street     String?
+  city       String?
+  postalCode String?
+  country    String?
+  isDefault  Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime?
+
+  user   User    @relation(fields: [userId], references: [id])
+  orders Order[]
+}
+
+model Perfume {
+  id            String    @id @default(uuid())
+  name          String
+  slug          String    @unique
+  description   String?
+  brand         String?
+  concentration String?
+  priceCents    Int
+  volumeMl      Int
+  imageUrl      String?
+  isFeatured    Boolean   @default(false)
+  createdAt     DateTime?
+  updatedAt     DateTime?
+
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+  perfumeNotes PerfumeNote[]
+  collections  CollectionPerfume[]
+}
+
+model OlfactoryNote {
+  id   String @id @default(uuid())
+  name String @unique
+
+  perfumeNotes PerfumeNote[]
+}
+
+enum PerfumeNoteType {
+  top
+  heart
+  base
+}
+
+model PerfumeNote {
+  perfumeId String
+  noteId    String
+  type      PerfumeNoteType
+
+  perfume Perfume       @relation(fields: [perfumeId], references: [id])
+  note    OlfactoryNote @relation(fields: [noteId], references: [id])
+
+  @@id([perfumeId, noteId, type])
+}
+
+model Collection {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String  @unique
+  description String?
+  imageUrl    String?
+
+  perfumes CollectionPerfume[]
+}
+
+model CollectionPerfume {
+  collectionId String
+  perfumeId    String
+
+  collection Collection @relation(fields: [collectionId], references: [id])
+  perfume    Perfume    @relation(fields: [perfumeId], references: [id])
+
+  @@id([collectionId, perfumeId])
+}
+
+enum CartStatus {
+  active
+  ordered
+  abandoned
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?
+  status    CartStatus
+
+  user  User       @relation(fields: [userId], references: [id])
+  items CartItem[]
+}
+
+model CartItem {
+  id         String    @id @default(uuid())
+  cartId     String
+  perfumeId  String
+  quantity   Int       @default(1)
+  priceCents Int
+  createdAt  DateTime?
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  perfume Perfume @relation(fields: [perfumeId], references: [id])
+}
+
+enum OrderStatus {
+  pending
+  paid
+  shipped
+  cancelled
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  userId     String
+  addressId  String?
+  totalCents Int
+  status     OrderStatus
+  placedAt   DateTime?
+  updatedAt  DateTime?
+
+  user    User         @relation(fields: [userId], references: [id])
+  address UserAddress? @relation(fields: [addressId], references: [id])
+  items   OrderItem[]
+  payment Payment?
+}
+
+model OrderItem {
+  id         String @id @default(uuid())
+  orderId    String
+  perfumeId  String
+  quantity   Int
+  priceCents Int
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  perfume Perfume @relation(fields: [perfumeId], references: [id])
+}
+
+enum PaymentProvider {
+  Stripe
+  PayPal
+}
+
+enum PaymentStatus {
+  succeeded
+  failed
+  refunded
+}
+
+model Payment {
+  id                String          @id @default(uuid())
+  orderId           String          @unique
+  provider          PaymentProvider
+  providerPaymentId String
+  amountCents       Int
+  status            PaymentStatus
+  paidAt            DateTime?
+
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+enum NotificationType {
+  email
+  sms
+}
+
+model Notification {
+  id      String           @id @default(uuid())
+  userId  String
+  type    NotificationType
+  content String
+  sentAt  DateTime?
+  read    Boolean          @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+}
