@@ -1,6 +1,11 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
+  palette: {
+    text: {
+      primary: "#333",
+    },
+  },
   typography: {
     fontFamily: "var(--font-inter), sans-serif",
     h1: {
