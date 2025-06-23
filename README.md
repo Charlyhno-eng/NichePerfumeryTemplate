@@ -33,11 +33,10 @@ Cette séparation garantit une forte maintenabilité, des tests isolés et une l
 ## 3. Modules Fonctionnels
 
 - **Authentification** : JWT, OAuth2 (Google, etc.)
-- **Utilisateurs** : création, gestion, préférences
-- **Catalogue de parfums** : navigation par filtres (notes, marques, familles)
+- **Catalogue de parfums** : navigation par filtres
 - **Panier** : ajout, suppression, quantité, persistance
 - **Commandes & Paiements** : intégration Stripe / PayPal
-- **Notifications** : emails transactionnels (confirmation commande, réinitialisation, etc.)
+- **Notifications** : emails transactionnels (confirmation commande, réinitialisation...)
 - **Admin** : gestion des produits, stocks, commandes, utilisateurs
 
 ---
