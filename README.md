@@ -6,42 +6,7 @@ Ce projet est un modèle pour la création d'une plateforme de commerce spécial
 
 ---
 
-## 1. Stack Technique
-
-- **Framework fullstack** : [Next.js (App Router)](https://nextjs.org/docs/app)
-- **Langage** : TypeScript
-- **ORM** : Prisma
-- **Base de données** : PostgreSQL
-- **UI** : Material UI (MUI)
-- **Architecture** : Hexagonale (Ports & Adapters)
-- **Méthodologie** : Test-Driven Development (TDD), Clean Code
-
----
-
-## 2. Architecture Hexagonale
-
-Le projet est structuré selon les principes de l’**architecture hexagonale** :
-
-- **Core (Domaine pur)** : entités, objets de valeur, interfaces, use-cases
-- **Adapters** : exposition des cas d’utilisation via des routes API Next.js
-- **Infrastructure** : implémentations concrètes des interfaces (accès DB, services externes)
-
-Cette séparation garantit une forte maintenabilité, des tests isolés et une logique métier indépendante de la technologie.
-
----
-
-## 3. Modules Fonctionnels
-
-- **Authentification** : JWT, OAuth2 (Google, etc.)
-- **Catalogue de parfums** : navigation par filtres
-- **Panier** : ajout, suppression, quantité, persistance
-- **Commandes & Paiements** : intégration Stripe / PayPal
-- **Notifications** : emails transactionnels (confirmation commande, réinitialisation...)
-- **Admin** : gestion des produits, stocks, commandes, utilisateurs
-
----
-
-## 4. Lancer le projet
+## 1. Lancer le projet
 
 ### Prérequis
 
@@ -64,6 +29,47 @@ npx prisma migrate dev --name init
 # 4. Lancer le serveur de développement
 npm run dev
 ```
+
+---
+
+## 2. Stack Technique
+
+- **Framework fullstack** : [Next.js (App Router)](https://nextjs.org/docs/app)
+- **Langage** : TypeScript
+- **ORM** : Prisma
+- **Base de données** : PostgreSQL
+- **UI** : Material UI (MUI)
+- **Architecture** : Hexagonale (Ports & Adapters)
+- **Méthodologie** : Test-Driven Development (TDD), Clean Code
+
+---
+
+## 3. Architecture Hexagonale
+
+Le projet est structuré selon les principes de l’**architecture hexagonale** :
+
+- **Core (Domaine pur)** : entités, objets de valeur, interfaces, use-cases
+- **Adapters** : exposition des cas d’utilisation via des routes API Next.js
+- **Infrastructure** : implémentations concrètes des interfaces (accès DB, services externes)
+
+Cette séparation garantit une forte maintenabilité, des tests isolés et une logique métier indépendante de la technologie.
+
+---
+
+## 4. Modules Fonctionnels
+
+- **Authentification** : JWT, OAuth2 (Google, etc.)
+- **Catalogue de parfums** : navigation par filtres
+- **Panier** : ajout, suppression, quantité, persistance
+- **Commandes & Paiements** : intégration Stripe / PayPal
+- **Notifications** : emails transactionnels (confirmation commande, réinitialisation...)
+- **Admin** : gestion des produits, stocks, commandes, utilisateurs
+
+---
+
+## 5. Schéma de la base de données
+
+![Schéma de la base de données](public/image1.png)
 
 ---
 
