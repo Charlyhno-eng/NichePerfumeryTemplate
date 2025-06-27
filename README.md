@@ -69,7 +69,7 @@ Cette séparation garantit une forte maintenabilité, des tests isolés et une l
 
 ## 5. Schéma de la base de données
 
-![Schéma de la base de données](public/image1.png)
+![Schéma de la base de données](public/db_schemas.png)
 
 ---
 
