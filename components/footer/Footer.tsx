@@ -1,119 +1,173 @@
 "use client";
 
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  TextField,
+  IconButton,
+  Divider,
+  Link,
+} from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function Footer() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const menuId = "footer-account-menu";
-  const mobileMenuId = "footer-account-menu-mobile";
-
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="fixed"
-        component="footer"
-        sx={{ top: "auto", bottom: 0, zIndex: (theme) => theme.zIndex.appBar }}
-      >
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ display: { xs: "none", sm: "block" } }}
+    <Box
+      component="footer"
+      sx={{ backgroundColor: "#eee", mt: 4, pt: 4, pb: 4 }}
+    >
+      <Container maxWidth="lg">
+        {/* Newsletter */}
+        <Box textAlign="center" mb={6}>
+          <Typography variant="h6" fontWeight="300" gutterBottom>
+            Newsletter
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mb={2}>
+            Abonnez-vous pour suivre notre actualité
+          </Typography>
+          <Box
+            component="form"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              maxWidth: 400,
+              mx: "auto",
+              borderBottom: 1,
+              borderColor: "grey.400",
+            }}
+          >
+            <TextField
+              variant="standard"
+              placeholder="Email"
+              fullWidth
+              InputProps={{ disableUnderline: true }}
+              sx={{ flex: 1 }}
+            />
+            <IconButton type="submit">
+              <ArrowForwardIcon />
+            </IconButton>
+          </Box>
+          <Typography variant="caption" mt={1} display="block">
+            Consultez la{" "}
+            <Link href="#" underline="hover">
+              politique de confidentialité
+            </Link>
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 4 }} />
+
+        <Box display="flex" justifyContent="center">
+          <Grid
+            container
+            spacing={4}
+            sx={{ maxWidth: 1000 }}
+            justifyContent="center"
+          >
+            <Grid item xs={6} sm={3}>
+              <Typography variant="subtitle2" gutterBottom>
+                Boutiques
+              </Typography>
+              <Link href="#" variant="body2" display="block" underline="none">
+                Boutiques
+              </Link>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <Typography variant="subtitle2" gutterBottom>
+                Service Client
+              </Typography>
+              {[
+                "Contact",
+                "FAQ",
+                "Livraison & retours",
+                "Les amis de la maison",
+              ].map((text) => (
+                <Link
+                  key={text}
+                  href="#"
+                  variant="body2"
+                  display="block"
+                  underline="none"
+                >
+                  {text}
+                </Link>
+              ))}
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <Typography variant="subtitle2" gutterBottom>
+                Mentions légales
+              </Typography>
+              {[
+                "Conditions générales de vente",
+                "Conditions générales du programme de fidélité",
+                "Politique de vie privée",
+                "Crédits",
+                "Environnement",
+                "Politique des cookies",
+                "Index d’égalité femmes-hommes",
+                "Gestion des cookies",
+              ].map((text) => (
+                <Link
+                  key={text}
+                  href="#"
+                  variant="body2"
+                  display="block"
+                  underline="none"
+                >
+                  {text}
+                </Link>
+              ))}
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+              <Typography variant="subtitle2" gutterBottom>
+                Social
+              </Typography>
+              {["Instagram", "TikTok", "Facebook", "YouTube", "LinkedIn"].map(
+                (text) => (
+                  <Link
+                    key={text}
+                    href="#"
+                    variant="body2"
+                    display="block"
+                    underline="none"
+                  >
+                    {text}
+                  </Link>
+                ),
+              )}
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Divider sx={{ my: 4 }} />
+
+        {/* Bas de page */}
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems="center"
         >
-          MUI Footer
-        </Typography>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+          <Typography variant="caption" color="text.secondary">
+            Tous droits réservés
+          </Typography>
+          <Box mt={{ xs: 2, sm: 0 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+              /EUR
+            </Typography>
+            <Link href="#" variant="caption" underline="hover">
+              Plan du site
+            </Link>
+          </Box>
+        </Box>
+      </Container>
     </Box>
   );
 }

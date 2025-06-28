@@ -29,10 +29,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="h-full">
-      <body className={`${playfairDisplay.variable} ${inter.variable}`}>
+      <body
+        className={`${playfairDisplay.variable} ${inter.variable} h-full`}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
         <MuiThemeProvider>
           <Header />
-          {children}
+          <main style={{ flex: 1 }}>{children}</main>
           <Footer />
         </MuiThemeProvider>
       </body>
