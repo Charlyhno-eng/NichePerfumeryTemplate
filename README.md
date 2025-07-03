@@ -4,6 +4,11 @@ Modèle de site e-commerce de parfum de niche.
 
 Ce projet est un modèle pour la création d'une plateforme de commerce spécialisée dans la vente de parfums de niche. Il fournit une architecture moderne, modulaire et testable pour développer un site performant, maintenable et extensible.
 
+## **Aperçu**
+
+![Format PC](public/readme/format_pc.png)
+![Format téléphone](public/readme/format_telephone.png)
+
 ---
 
 ## 1. Lancer le projet
@@ -69,7 +74,7 @@ Cette séparation garantit une forte maintenabilité, des tests isolés et une l
 
 ## 5. Schéma de la base de données
 
-![Schéma de la base de données](public/db_schemas.png)
+![Schéma de la base de données](public/readme/db_schemas.png)
 
 ---
 

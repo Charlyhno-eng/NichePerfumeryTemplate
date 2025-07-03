@@ -20,7 +20,6 @@ export default function Footer() {
       sx={{ backgroundColor: "#eee", mt: 4, pt: 4, pb: 4 }}
     >
       <Container maxWidth="lg">
-        {/* Newsletter */}
         <Box textAlign="center" mb={6}>
           <Typography variant="h6" fontWeight="300" gutterBottom>
             Newsletter
@@ -68,8 +67,8 @@ export default function Footer() {
             sx={{ maxWidth: 1000 }}
             justifyContent="center"
           >
-            <Grid item xs={6} sm={3}>
-              <Typography variant="subtitle2" gutterBottom>
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Typography variant="h6" gutterBottom>
                 Boutiques
               </Typography>
               <Link href="#" variant="body2" display="block" underline="none">
@@ -77,8 +76,8 @@ export default function Footer() {
               </Link>
             </Grid>
 
-            <Grid item xs={6} sm={3}>
-              <Typography variant="subtitle2" gutterBottom>
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Typography variant="h6" gutterBottom>
                 Service Client
               </Typography>
               {[
@@ -99,8 +98,8 @@ export default function Footer() {
               ))}
             </Grid>
 
-            <Grid item xs={6} sm={3}>
-              <Typography variant="subtitle2" gutterBottom>
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Typography variant="h6" gutterBottom>
                 Mentions légales
               </Typography>
               {[
@@ -125,8 +124,8 @@ export default function Footer() {
               ))}
             </Grid>
 
-            <Grid item xs={6} sm={3}>
-              <Typography variant="subtitle2" gutterBottom>
+            <Grid size={{ xs: 6, sm: 3 }}>
+              <Typography variant="h6" gutterBottom>
                 Social
               </Typography>
               {["Instagram", "TikTok", "Facebook", "YouTube", "LinkedIn"].map(
@@ -148,7 +147,6 @@ export default function Footer() {
 
         <Divider sx={{ my: 4 }} />
 
-        {/* Bas de page */}
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}

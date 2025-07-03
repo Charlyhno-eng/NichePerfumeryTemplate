@@ -87,71 +87,85 @@ export default function HeaderNav() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 2.5,
-        py: 1.5,
-      }}
-    >
-      {navItems.map(({ label, submenu, href }) => (
-        <Box key={label}>
-          <Button
-            onClick={
-              submenu
-                ? (e) => handleOpen(e, label)
-                : href
-                  ? () => router.push(href)
-                  : undefined
-            }
-            sx={{
-              color: "#333",
-              textTransform: "uppercase",
-              fontWeight: 200,
-              display: "flex",
-              alignItems: "center",
-              gap: 0.5,
-            }}
-          >
-            {label}
-            {submenu && (
-              <KeyboardArrowDownIcon sx={{ fontSize: "1rem", mt: "1px" }} />
-            )}
-          </Button>
-
-          {submenu && (
-            <Menu
-              anchorEl={anchorEl}
-              open={openMenuLabel === label}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "top", horizontal: "center" }}
-              slotProps={{ paper: { sx: { width: "220px" } } }}
+    <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
+      <Box sx={{ width: "100%", maxWidth: 1000 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: { xs: "center", md: "center" },
+            gap: 1.5,
+          }}
+        >
+          {navItems.map(({ label, submenu, href }) => (
+            <Box
+              key={label}
+              sx={{
+                width: { xs: "30%", md: "auto" },
+                textAlign: "center",
+                minWidth: 100,
+              }}
             >
-              {submenu.map((item, idx) => (
-                <Box key={idx}>
-                  <MenuItem onClick={() => handleRedirect(item.href)}>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        textTransform: "uppercase",
-                        width: "100%",
-                        fontWeight: 200,
-                        textAlign: "center",
-                      }}
-                    >
-                      {item.label}
-                    </Typography>
-                  </MenuItem>
-                  {idx < submenu.length - 1 && <Divider />}
-                </Box>
-              ))}
-            </Menu>
-          )}
+              <Button
+                onClick={
+                  submenu
+                    ? (e) => handleOpen(e, label)
+                    : href
+                      ? () => router.push(href)
+                      : undefined
+                }
+                sx={{
+                  color: "#333",
+                  textTransform: "uppercase",
+                  fontWeight: 200,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  width: "100%",
+                  justifyContent: "center",
+                  fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                  padding: "6px 0",
+                }}
+              >
+                {label}
+                {submenu && (
+                  <KeyboardArrowDownIcon sx={{ fontSize: "1rem", mt: "1px" }} />
+                )}
+              </Button>
+
+              {submenu && (
+                <Menu
+                  anchorEl={anchorEl}
+                  open={openMenuLabel === label}
+                  onClose={handleClose}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  transformOrigin={{ vertical: "top", horizontal: "center" }}
+                  slotProps={{ paper: { sx: { width: "220px" } } }}
+                >
+                  {submenu.map((item, idx) => (
+                    <Box key={idx}>
+                      <MenuItem onClick={() => handleRedirect(item.href)}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            textTransform: "uppercase",
+                            width: "100%",
+                            fontWeight: 200,
+                            textAlign: "center",
+                          }}
+                        >
+                          {item.label}
+                        </Typography>
+                      </MenuItem>
+                      {idx < submenu.length - 1 && <Divider />}
+                    </Box>
+                  ))}
+                </Menu>
+              )}
+            </Box>
+          ))}
         </Box>
-      ))}
+      </Box>
     </Box>
   );
 }
