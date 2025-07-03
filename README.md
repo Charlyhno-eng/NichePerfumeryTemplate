@@ -6,7 +6,10 @@ Ce projet est un modèle pour la création d'une plateforme de commerce spécial
 
 ## **Aperçu**
 
+**_Format PC_**
 ![Format PC](public/readme/format_pc.png)
+
+**_Format téléphone_**
 ![Format téléphone](public/readme/format_telephone.png)
 
 ---
