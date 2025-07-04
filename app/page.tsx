@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Grid, Typography } from "@mui/material";
-import CustomButton from "@/components/CustomButton/CustomButton";
+import BasicButton from "@/components/buttons/BasicButton/BasicButton";
 
 const sections = [
   {
@@ -97,7 +97,7 @@ export default function Home() {
               >
                 {section.description}
               </Typography>
-              <CustomButton>DÉCOUVRIR</CustomButton>
+              <BasicButton>DÉCOUVRIR</BasicButton>
             </Box>
           </Grid>
         </Grid>

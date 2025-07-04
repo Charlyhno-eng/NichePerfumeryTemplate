@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 
-interface CustomButtonProps {
+type BasicButtonProps = {
   onClick?: () => void;
   typographyVariant?:
     | "body1"
@@ -12,13 +12,13 @@ interface CustomButtonProps {
     | "subtitle2"
     | "h6";
   children: React.ReactNode;
-}
+};
 
 export default function CustomButton({
   onClick,
   typographyVariant = "body2",
   children,
-}: CustomButtonProps) {
+}: BasicButtonProps) {
   return (
     <Button
       variant="outlined"

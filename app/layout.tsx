@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "../styles/globals.css";
 import MuiThemeProvider from "./MuiThemeProvider";
-import Header from "../components/header/Header";
-import Footer from "@/components/footer/Footer";
+import Header from "../components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
