@@ -14,12 +14,15 @@
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@prisma/client": "^6.10.1",
+    "cookie": "^1.0.2",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",

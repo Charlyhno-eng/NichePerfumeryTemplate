@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   Box,
   Modal,
@@ -17,10 +18,47 @@ type ProfileModalProps = {
 };
 
 export default function ProfileModal({ open, onClose }: ProfileModalProps) {
+  const [error, setError] = useState("");
+  const [remember, setRemember] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email")?.toString() || "";
+    const password = formData.get("password")?.toString() || "";
+    const rememberValue = formData.get("remember") === "on";
+
+    if (!email || !password) {
+      setError("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, remember: rememberValue }),
+      });
+
+      if (response.ok) {
+        onClose();
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        setError(data.message || "Erreur inconnue");
+      }
+    } catch {
+      setError("Erreur réseau ou serveur.");
+    }
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Slide in={open} direction="down" timeout={600}>
         <Box
+          component="form"
+          onSubmit={handleLogin}
           sx={{
             position: "absolute",
             width: "100%",
@@ -49,19 +87,25 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
             <Typography variant="h6" fontWeight="bold" gutterBottom>
               Clients enregistrés
             </Typography>
+
             <TextField
               fullWidth
               label="Identifiant ou e-mail"
               variant="standard"
+              name="email"
               sx={{ mb: 1 }}
+              autoComplete="username"
             />
             <TextField
               fullWidth
               label="Mot de passe"
               type="password"
               variant="standard"
+              name="password"
               sx={{ mb: 1 }}
+              autoComplete="current-password"
             />
+
             <Box
               sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
             >
@@ -69,12 +113,26 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
                 Mot de passe oublié
               </Typography>
             </Box>
+
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                  name="remember"
+                />
+              }
               label="Se souvenir de moi"
               sx={{ mb: 2 }}
             />
-            <RoundedButton>Se connecter</RoundedButton>
+
+            {error && (
+              <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                {error}
+              </Typography>
+            )}
+
+            <RoundedButton type="submit">Se connecter</RoundedButton>
           </Box>
         </Box>
       </Slide>

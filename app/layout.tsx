@@ -28,9 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="h-full">
+    <html
+      lang="fr"
+      className={`${playfairDisplay.variable} ${inter.variable} h-full`}
+    >
       <body
-        className={`${playfairDisplay.variable} ${inter.variable} h-full`}
         style={{
           display: "flex",
           flexDirection: "column",
