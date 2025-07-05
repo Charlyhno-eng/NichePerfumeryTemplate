@@ -88,20 +88,21 @@ Cette séparation garantit une forte maintenabilité, des tests isolés et une l
 ```bash
 .
 ├── app/                    # App Router Next.js (routes/pages)
+│   ├── api/                # Appels API (routes/api)
 ├── components/             # Composants UI MUI
 ├── core/                   # Domaine : entités, use-cases, ports
 │   ├── domain/
 │   ├── use-cases/
 │   └── services/
-├── api/                    # Appels API (routes/api)
 ├── infrastructure/         # DB, Prisma, services externes
 │   ├── prisma/
 │   ├── repositories/
 │   └── services/
-├── tests/                  # Tests unitaires & intégration (TDD)
+├── prisma/                 # Schéma Prisma
 ├── public/                 # Fichiers statiques
+├── styles/                 # Thèmes Material UI et CSS
+├── tests/                  # Tests unitaires & intégration (TDD)
 ├── .env                    # Configuration base de données
-├── prisma/schema.prisma    # Schéma Prisma
 ├── package.json
 └── tsconfig.json
 ```
