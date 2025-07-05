@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Modal,
@@ -20,6 +19,20 @@ type ProfileModalProps = {
 export default function ProfileModal({ open, onClose }: ProfileModalProps) {
   const [error, setError] = useState("");
   const [remember, setRemember] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        setIsLoggedIn(res.ok);
+      } catch {
+        setIsLoggedIn(false);
+      }
+    })();
+  }, [open]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +40,6 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email")?.toString() || "";
     const password = formData.get("password")?.toString() || "";
-    const rememberValue = formData.get("remember") === "on";
 
     if (!email || !password) {
       setError("Veuillez remplir tous les champs.");
@@ -35,17 +47,15 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
     }
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, remember: rememberValue }),
+        body: JSON.stringify({ email, password, remember }),
       });
-
-      if (response.ok) {
-        onClose();
-        window.location.reload();
+      if (res.ok) {
+        setIsLoggedIn(true);
       } else {
-        const data = await response.json();
+        const data = await res.json();
         setError(data.message || "Erreur inconnue");
       }
     } catch {
@@ -53,12 +63,24 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+      if (res.ok) {
+        setIsLoggedIn(false);
+        onClose();
+      } else {
+        setError("Erreur lors de la déconnexion.");
+      }
+    } catch {
+      setError("Erreur réseau lors de la déconnexion.");
+    }
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Slide in={open} direction="down" timeout={600}>
         <Box
-          component="form"
-          onSubmit={handleLogin}
           sx={{
             position: "absolute",
             width: "100%",
@@ -66,74 +88,100 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
             p: 4,
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
-            justifyContent: "space-between",
+            justifyContent: "center",
+            alignItems: "center",
             gap: 4,
           }}
         >
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
-              Nouveaux clients
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 6 }}>
-              Créez un compte pour accélérer le processus d’enregistrement lors
-              des prochains achats et recevoir des offres spéciales.
-            </Typography>
-            <RoundedButton>S’inscrire</RoundedButton>
-          </Box>
-
-          <ResponsiveDivider />
-
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
-              Clients enregistrés
-            </Typography>
-
-            <TextField
-              fullWidth
-              label="Identifiant ou e-mail"
-              variant="standard"
-              name="email"
-              sx={{ mb: 1 }}
-              autoComplete="username"
-            />
-            <TextField
-              fullWidth
-              label="Mot de passe"
-              type="password"
-              variant="standard"
-              name="password"
-              sx={{ mb: 1 }}
-              autoComplete="current-password"
-            />
-
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
-            >
-              <Typography variant="body2" color="text.secondary">
-                Mot de passe oublié
+          {isLoggedIn ? (
+            <Box textAlign="center">
+              <Typography variant="h6" gutterBottom>
+                Vous êtes connecté
               </Typography>
+              <RoundedButton onClick={handleLogout}>Déconnexion</RoundedButton>
             </Box>
+          ) : (
+            <Box
+              component="form"
+              onSubmit={handleLogin}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                justifyContent: "space-between",
+                gap: 4,
+                width: "100%",
+              }}
+            >
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  Nouveaux clients
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 6 }}>
+                  Créez un compte pour accélérer le processus d’enregistrement
+                  lors des prochains achats et recevoir des offres spéciales.
+                </Typography>
+                <RoundedButton>S’inscrire</RoundedButton>
+              </Box>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
-                  name="remember"
+              <ResponsiveDivider />
+
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  Clients enregistrés
+                </Typography>
+
+                <TextField
+                  fullWidth
+                  label="Identifiant ou e-mail"
+                  variant="standard"
+                  name="email"
+                  sx={{ mb: 1 }}
+                  autoComplete="username"
                 />
-              }
-              label="Se souvenir de moi"
-              sx={{ mb: 2 }}
-            />
+                <TextField
+                  fullWidth
+                  label="Mot de passe"
+                  type="password"
+                  variant="standard"
+                  name="password"
+                  sx={{ mb: 1 }}
+                  autoComplete="current-password"
+                />
 
-            {error && (
-              <Typography variant="body2" color="error" sx={{ mb: 1 }}>
-                {error}
-              </Typography>
-            )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 2,
+                  }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Mot de passe oublié
+                  </Typography>
+                </Box>
 
-            <RoundedButton type="submit">Se connecter</RoundedButton>
-          </Box>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={remember}
+                      onChange={(e) => setRemember(e.target.checked)}
+                      name="remember"
+                    />
+                  }
+                  label="Se souvenir de moi"
+                  sx={{ mb: 2 }}
+                />
+
+                {error && (
+                  <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                    {error}
+                  </Typography>
+                )}
+
+                <RoundedButton type="submit">Se connecter</RoundedButton>
+              </Box>
+            </Box>
+          )}
         </Box>
       </Slide>
     </Modal>
